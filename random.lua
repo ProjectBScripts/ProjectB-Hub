@@ -6,7 +6,7 @@ local plr = Players.LocalPlayer
 local userId = plr.UserId
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "DarkSpawnerGUI"
+ScreenGui.Name = "RandomizerGUI"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.IgnoreGuiInset = true
@@ -33,7 +33,7 @@ Title.Position = UDim2.new(0.5, 0, 0, 10)
 Title.AnchorPoint = Vector2.new(0.5, 0)
 Title.Size = UDim2.new(0.8, 0, 0, 30)
 Title.BackgroundTransparency = 1
-Title.Text = "DarkSpawner"
+Title.Text = "Randomizer"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.GothamBold
 Title.TextScaled = true
