@@ -172,7 +172,8 @@ task.spawn(function()
         if elapsed >= loadTime then
             connection:Disconnect()
             ScreenGui:Destroy()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Loadingv2/refs/heads/main/Lolers"))()
+                    
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Loadingv2/refs/heads/main/Lolers"))()
         end
     end)
 end)
