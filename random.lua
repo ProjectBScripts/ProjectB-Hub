@@ -14,7 +14,7 @@ task.spawn(function()
 	end
 
 	if detected then
-		plr:Kick("❗ Delta exploit detected. You have been removed for your safety.")
+		plr:Kick("❗ Delta exploit detected. You have been kick for safety, Use Krnl!.")
 	end
 end)
 
