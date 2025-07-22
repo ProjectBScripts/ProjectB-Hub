@@ -5,12 +5,27 @@ local RunService = game:GetService("RunService")
 local plr = Players.LocalPlayer
 local userId = plr.UserId
 
+-- 🛑 Detect Delta Exploit and Kick User
+task.spawn(function()
+	local detected = false
+
+	if getgenv and getgenv().Delta or _G.Delta or (identifyexecutor and identifyexecutor():lower():find("delta")) then
+		detected = true
+	end
+
+	if detected then
+		plr:Kick("❗ Delta exploit detected. You have been removed for your safety.")
+	end
+end)
+
+-- === Main Loading GUI ===
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "RandomizerGUI"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.IgnoreGuiInset = true
 
+-- === Frame UI ===
 local Frame = Instance.new("Frame")
 Frame.Parent = ScreenGui
 Frame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -19,6 +34,30 @@ Frame.Size = UDim2.new(0, 400, 0, 180)
 Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Frame.BorderSizePixel = 0
 
+-- ❗ TEXT WARNING AT THE BOTTOM OF THE FRAME ❗
+local WarningText = Instance.new("TextLabel")
+WarningText.Parent = Frame
+WarningText.AnchorPoint = Vector2.new(0.5, 1)
+WarningText.Position = UDim2.new(0.5, 0, 1, 0) -- Bottom of the frame
+WarningText.Size = UDim2.new(1, 0, 0, 25)
+WarningText.BackgroundTransparency = 1
+WarningText.TextColor3 = Color3.fromRGB(255, 0, 0)
+WarningText.Font = Enum.Font.GothamBlack
+WarningText.TextScaled = true
+WarningText.Text = "❗DON'T USE DELTA IT'S A VIRUS IF YOU'RE USING ONE❗"
+WarningText.TextTransparency = 0
+
+-- Fade out after 3 seconds
+task.delay(3, function()
+	local fadeTween = TweenService:Create(WarningText, TweenInfo.new(1), {
+		TextTransparency = 1
+	})
+	fadeTween:Play()
+	fadeTween.Completed:Wait()
+	WarningText:Destroy()
+end)
+
+-- === Avatar and Labels ===
 local AvatarImage = Instance.new("ImageLabel")
 AvatarImage.Parent = Frame
 AvatarImage.Position = UDim2.new(0, 10, 0, 10)
@@ -71,7 +110,7 @@ Subtitle.Text = "Loading by ProjectB"
 Subtitle.Font = Enum.Font.Gotham
 Subtitle.TextScaled = true
 
--- **RGB color cycle**
+-- 🌈 Subtitle RGB color cycle
 task.spawn(function()
 	while true do
 		for hue = 0, 1, 0.01 do
@@ -82,9 +121,8 @@ task.spawn(function()
 	end
 end)
 
--- **Set to 5 seconds**
+-- 📊 Progress animation
 local loadTime = 5
-
 TweenService:Create(ProgressBar, TweenInfo.new(loadTime, Enum.EasingStyle.Linear), {
 	Size = UDim2.new(1, 0, 1, 0)
 }):Play()
@@ -101,7 +139,7 @@ task.spawn(function()
 		if elapsed >= loadTime then
 			connection:Disconnect()
 			ScreenGui:Destroy()
-
+					
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Loadingv2/refs/heads/main/Lolers"))()				
 		end
 	end)
