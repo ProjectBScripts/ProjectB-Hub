@@ -5,76 +5,7 @@ local RunService = game:GetService("RunService")
 local plr = Players.LocalPlayer
 local userId = plr.UserId
 
--- Delta Detection
-local function isDelta()
-    local exec = (identifyexecutor and identifyexecutor()) or (getexecutorname and getexecutorname()) or "Unknown"
-    return tostring(exec):lower():find("delta") ~= nil
-end
-
--- Show Delta Warning GUI
-local function showDeltaWarning()
-    local gui = Instance.new("ScreenGui", plr:WaitForChild("PlayerGui"))
-    gui.Name = "Delta_Warning"
-    gui.ResetOnSpawn = false
-
-    local frame = Instance.new("Frame", gui)
-    frame.Size = UDim2.new(0, 420, 0, 200)
-    frame.Position = UDim2.new(0.5, -210, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
-    frame.BorderSizePixel = 0
-    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
-
-    local message = Instance.new("TextLabel", frame)
-    message.Size = UDim2.new(1, -20, 1, -60)
-    message.Position = UDim2.new(0, 10, 0, 10)
-    message.BackgroundTransparency = 1
-    message.TextWrapped = true
-    message.TextYAlignment = Enum.TextYAlignment.Top
-    message.TextXAlignment = Enum.TextXAlignment.Left
-    message.TextColor3 = Color3.new(1, 1, 1)
-    message.Font = Enum.Font.Gotham
-    message.TextSize = 13
-    message.Text = [[Welcome to ProjectBscripts!
-We're currently experiencing issues with the Delta executor.
-If you're using Delta, please switch to a different executor, as Delta is falsely flagging our script.
-
-For a smoother experience, we recommend using KRNL.
-You can download it at krnl.cat!]]
-
-    -- Close Button
-    local closeBtn = Instance.new("TextButton", frame)
-    closeBtn.Size = UDim2.new(0, 24, 0, 24)
-    closeBtn.Position = UDim2.new(1, -30, 0, 6)
-    closeBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    closeBtn.TextColor3 = Color3.new(1, 1, 1)
-    closeBtn.Text = "X"
-    closeBtn.Font = Enum.Font.GothamBold
-    closeBtn.TextSize = 14
-    closeBtn.AutoButtonColor = false
-    Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
-
-    -- Button Hover Effects
-    closeBtn.MouseEnter:Connect(function()
-        closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-    end)
-
-    closeBtn.MouseLeave:Connect(function()
-        closeBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    end)
-
-    -- Close Button Action
-    closeBtn.MouseButton1Click:Connect(function()
-        gui:Destroy()
-    end)
-end
-
--- ▼ Only show warning if Delta is detected ▼
-if isDelta() then
-    showDeltaWarning()
-    return
-end
-
--- ▼ Otherwise show Loading GUI ▼
+-- ▼ Show Loading GUI ▼
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "RandomizerGUI"
@@ -173,7 +104,7 @@ task.spawn(function()
             connection:Disconnect()
             ScreenGui:Destroy()
                     
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Loadingv2/refs/heads/main/Lolers"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Loadingv2/refs/heads/main/Lolers"))()
         end
     end)
 end)
