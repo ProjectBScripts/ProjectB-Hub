@@ -5,29 +5,26 @@ local RunService = game:GetService("RunService")
 local plr = Players.LocalPlayer
 local userId = plr.UserId
 
--- ▼ Function to detect Delta executor ▼
+-- Delta Detection
 local function isDelta()
     local exec = (identifyexecutor and identifyexecutor()) or (getexecutorname and getexecutorname()) or "Unknown"
-    print("[Executor Detected]:", exec) -- Debug log
     return tostring(exec):lower():find("delta") ~= nil
 end
 
--- ▼ Function to show the Delta warning GUI and kick ▼
+-- Show Delta Warning GUI
 local function showDeltaWarning()
-    local gui = Instance.new("ScreenGui")
+    local gui = Instance.new("ScreenGui", plr:WaitForChild("PlayerGui"))
     gui.Name = "Delta_Warning"
     gui.ResetOnSpawn = false
-    gui.Parent = plr:WaitForChild("PlayerGui")
 
-    local frame = Instance.new("Frame")
+    local frame = Instance.new("Frame", gui)
     frame.Size = UDim2.new(0, 420, 0, 200)
     frame.Position = UDim2.new(0.5, -210, 0.5, -100)
     frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
     frame.BorderSizePixel = 0
-    frame.Parent = gui
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 
-    local message = Instance.new("TextLabel")
+    local message = Instance.new("TextLabel", frame)
     message.Size = UDim2.new(1, -20, 1, -60)
     message.Position = UDim2.new(0, 10, 0, 10)
     message.BackgroundTransparency = 1
@@ -37,24 +34,15 @@ local function showDeltaWarning()
     message.TextColor3 = Color3.new(1, 1, 1)
     message.Font = Enum.Font.Gotham
     message.TextSize = 13
-    message.Text = [[❗WARNING: DELTA EXECUTOR DETECTED❗
-We're currently experiencing issues with Delta.
-Please switch to a different executor like KRNL (krnl.cat).
+    message.Text = [[Welcome to ProjectBscripts!
+We're currently experiencing issues with the Delta executor.
+If you're using Delta, please switch to a different executor, as Delta is falsely flagging our script.
 
-You will be automatically kicked in 25 seconds if Delta is still detected.]]
-    message.Parent = frame
+For a smoother experience, we recommend using KRNL.
+You can download it at krnl.cat!]]
 
-    local countdownLabel = Instance.new("TextLabel")
-    countdownLabel.Size = UDim2.new(1, 0, 0, 30)
-    countdownLabel.Position = UDim2.new(0, 0, 1, -30)
-    countdownLabel.BackgroundTransparency = 1
-    countdownLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
-    countdownLabel.Text = "Kicking in 25 seconds..."
-    countdownLabel.Font = Enum.Font.GothamBold
-    countdownLabel.TextSize = 14
-    countdownLabel.Parent = frame
-
-    local closeBtn = Instance.new("TextButton")
+    -- Close Button
+    local closeBtn = Instance.new("TextButton", frame)
     closeBtn.Size = UDim2.new(0, 24, 0, 24)
     closeBtn.Position = UDim2.new(1, -30, 0, 6)
     closeBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -63,9 +51,9 @@ You will be automatically kicked in 25 seconds if Delta is still detected.]]
     closeBtn.Font = Enum.Font.GothamBold
     closeBtn.TextSize = 14
     closeBtn.AutoButtonColor = false
-    closeBtn.Parent = frame
     Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
 
+    -- Button Hover Effects
     closeBtn.MouseEnter:Connect(function()
         closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
     end)
@@ -74,27 +62,20 @@ You will be automatically kicked in 25 seconds if Delta is still detected.]]
         closeBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
     end)
 
+    -- Close Button Action
     closeBtn.MouseButton1Click:Connect(function()
         gui:Destroy()
     end)
-
-    -- Kick after 25 seconds
-    task.spawn(function()
-        for i = 25, 1, -1 do
-            countdownLabel.Text = "Kicking in " .. i .. " seconds..."
-            task.wait(1)
-        end
-        plr:Kick("Delta Executor Detected. Please use a different executor like KRNL.")
-    end)
 end
 
--- ▼ If Delta is detected, show warning and stop loading ▼
+-- ▼ Only show warning if Delta is detected ▼
 if isDelta() then
     showDeltaWarning()
     return
 end
 
--- ▼ Else, show loading screen ▼
+-- ▼ Otherwise show Loading GUI ▼
+-- ▼ Show Loading GUI ▼
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "RandomizerGUI"
@@ -162,37 +143,39 @@ Subtitle.Text = "Loading by ProjectB"
 Subtitle.Font = Enum.Font.Gotham
 Subtitle.TextScaled = true
 
--- Rainbow subtitle effect
+-- Rainbow Subtitle
 task.spawn(function()
-    while true do
-        for hue = 0, 1, 0.01 do
-            Subtitle.TextColor3 = Color3.fromHSV(hue, 1, 1)
-            task.wait(0.05)
-        end
-    end
+while true do
+for hue = 0, 1, 0.01 do
+local color = Color3.fromHSV(hue, 1, 1)
+Subtitle.TextColor3 = color
+task.wait(0.05)
+end
+end
 end)
 
--- Animate the loading bar
+-- Animate loading bar and percent
 local loadTime = 5
 
 TweenService:Create(ProgressBar, TweenInfo.new(loadTime, Enum.EasingStyle.Linear), {
-    Size = UDim2.new(1, 0, 1, 0)
+Size = UDim2.new(1, 0, 1, 0)
 }):Play()
 
 task.spawn(function()
-    local startTime = tick()
-    local connection
+local startTime = tick()
+local connection
 
-    connection = RunService.RenderStepped:Connect(function()
-        local elapsed = tick() - startTime
-        local percent = math.clamp((elapsed / loadTime) * 100, 0, 100)
-        PercentText.Text = ("Loading: %d%%"):format(math.floor(percent + 0.5))
+connection = RunService.RenderStepped:Connect(function()
+local elapsed = tick() - startTime
+local percent = math.clamp((elapsed / loadTime) * 100, 0, 100)
+PercentText.Text = ("Loading: %d%%"):format(math.floor(percent + 0.5))
 
-        if elapsed >= loadTime then
-            connection:Disconnect()
-            ScreenGui:Destroy()
-            -- Make sure your file exists at this GitHub path!
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Niguuj/main/Ranloadi"))()
-        end
-    end)
+if elapsed >= loadTime then
+connection:Disconnect()
+ScreenGui:Destroy()
+					
+                    
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Niguuj/main/Ranloadi"))()
+                end
+        end)
 end)
