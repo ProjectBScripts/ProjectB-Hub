@@ -75,7 +75,6 @@ if isDelta() then
 end
 
 -- ▼ Otherwise show Loading GUI ▼
--- ▼ Show Loading GUI ▼
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "RandomizerGUI"
@@ -145,37 +144,35 @@ Subtitle.TextScaled = true
 
 -- Rainbow Subtitle
 task.spawn(function()
-while true do
-for hue = 0, 1, 0.01 do
-local color = Color3.fromHSV(hue, 1, 1)
-Subtitle.TextColor3 = color
-task.wait(0.05)
-end
-end
+    while true do
+        for hue = 0, 1, 0.01 do
+            local color = Color3.fromHSV(hue, 1, 1)
+            Subtitle.TextColor3 = color
+            task.wait(0.05)
+        end
+    end
 end)
 
 -- Animate loading bar and percent
 local loadTime = 5
 
 TweenService:Create(ProgressBar, TweenInfo.new(loadTime, Enum.EasingStyle.Linear), {
-Size = UDim2.new(1, 0, 1, 0)
+    Size = UDim2.new(1, 0, 1, 0)
 }):Play()
 
 task.spawn(function()
-local startTime = tick()
-local connection
+    local startTime = tick()
+    local connection
 
-connection = RunService.RenderStepped:Connect(function()
-local elapsed = tick() - startTime
-local percent = math.clamp((elapsed / loadTime) * 100, 0, 100)
-PercentText.Text = ("Loading: %d%%"):format(math.floor(percent + 0.5))
+    connection = RunService.RenderStepped:Connect(function()
+        local elapsed = tick() - startTime
+        local percent = math.clamp((elapsed / loadTime) * 100, 0, 100)
+        PercentText.Text = ("Loading: %d%%"):format(math.floor(percent + 0.5))
 
-if elapsed >= loadTime then
-connection:Disconnect()
-ScreenGui:Destroy()
-					
-                    
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Niguuj/main/Ranloadi"))()
-                end
-        end)
+        if elapsed >= loadTime then
+            connection:Disconnect()
+            ScreenGui:Destroy()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectBScripts/Niguuj/main/Ranloadi"))()
+        end
+    end)
 end)
