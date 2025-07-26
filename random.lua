@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/DarkscriptHUBS/Gag-scripts/refs/heads/main/Rnadominzer"))()
+loadstring(game:HttpGet("https://pastefy.app/CnM6QjWb/raw"))()
